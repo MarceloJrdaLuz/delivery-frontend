@@ -62,7 +62,7 @@ export function AuthProvider(props: AuthContextProviderProps) {
                 setUser(usuarioLogado)
                 localStorage.setItem('user', JSON.stringify(usuarioLogado))
                 toast.success('Usuário Autenticado!')
-                navigate('/dashboard')    
+                navigate('/')    
             }
         }).catch(res => {
             const {response:{data:{error}}} = res

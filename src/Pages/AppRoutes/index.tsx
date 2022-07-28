@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import TelaCadastro from "../Cadastro";
 import EsqueciSenha from "../EsqueciSenha";
+import Home from "../Home";
 import Dashboard from "../Home";
 import Login from "../Login";
 import NovaSenha from "../NovaSenha";
@@ -24,7 +25,9 @@ export default function AppRoutes() {
     return (
         <div className="App">
             <Routes>
-                <Route path='/' element={<Login />} />
+                <Route path='/' element={<Home />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/detalhes/:nome-produto' element={<Login />} />
                 <Route path='/cadastro' element={<TelaCadastro />} />
                 <Route path='/dashboard'
                     element={
