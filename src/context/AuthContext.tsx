@@ -1,6 +1,7 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Carrinho } from "../entities/types";
 import api from "../services/api";
 
 type AuthContextTypes = {
@@ -16,6 +17,8 @@ type AuthContextTypes = {
     setErroCadastro: Dispatch<SetStateAction<boolean>>
     btnDisabled: boolean
     setBtnDisabled: Dispatch<SetStateAction<boolean>>
+    carrinhoGlobal?: Array<Carrinho>
+    atualizarCarrinho?: (newValues: Carrinho) => void
 }
 
 type AuthContextProviderProps = {
@@ -39,6 +42,7 @@ export function AuthProvider(props: AuthContextProviderProps) {
     const [loading, setLoading] = useState(true)
     const [erroCadastro, setErroCadastro] = useState(false)
     const [btnDisabled, setBtnDisabled] = useState(false)
+    const [carrinhoGlobal, setCarrinhoGlobal] = useState<Carrinho[]>([])
 
     useEffect(() => {
         const usuarioRecuperado = localStorage.getItem('user')
@@ -47,6 +51,10 @@ export function AuthProvider(props: AuthContextProviderProps) {
         }
         setLoading(false)
     }, [])
+
+    function atualizarCarrinho(newValues: Carrinho){
+        setCarrinhoGlobal([...carrinhoGlobal, newValues])
+    }
 
     async function login(email: string, senha: string) {
         await api.post("/authenticated", {
@@ -117,7 +125,7 @@ export function AuthProvider(props: AuthContextProviderProps) {
         .then(res => {
             setBtnDisabled(false)
             toast.success('Senha atualizada com sucesso!')
-            navigate('/')   
+            navigate('/login')   
         })
         .catch(res => {
             setBtnDisabled(false)
@@ -143,7 +151,7 @@ export function AuthProvider(props: AuthContextProviderProps) {
 
     return (
         <AuthContext.Provider value={{
-            authenticated: !!user, user, loading, login, logout, cadastro, erroCadastro, setErroCadastro, resetPassword, esqueciMinhaSenha, btnDisabled, setBtnDisabled
+            authenticated: !!user, user, loading, login, logout, cadastro, erroCadastro, setErroCadastro, resetPassword, esqueciMinhaSenha, btnDisabled, setBtnDisabled, carrinhoGlobal, atualizarCarrinho
         }}>
             {props.children}
         </AuthContext.Provider>

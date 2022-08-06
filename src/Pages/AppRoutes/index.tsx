@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import TelaCadastro from "../Cadastro";
+import DetalhesProduto from "../DetalhesProduto";
 import EsqueciSenha from "../EsqueciSenha";
 import Home from "../Home";
 import Dashboard from "../Home";
@@ -27,7 +28,7 @@ export default function AppRoutes() {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/login' element={<Login />} />
-                <Route path='/detalhes/:nome-produto' element={<Login />} />
+                <Route path='/produto/:code' element={<DetalhesProduto />} />
                 <Route path='/cadastro' element={<TelaCadastro />} />
                 <Route path='/dashboard'
                     element={

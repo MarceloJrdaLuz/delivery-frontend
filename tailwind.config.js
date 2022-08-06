@@ -10,6 +10,13 @@ module.exports = {
           'hover': '#90caf9',
           'disabled': '#ccc',
           'default': '#64b5f6'
+        },
+        modals:{
+          'primary': '#302F3C',
+        },
+        principais: {
+          'primary': '#FF6838',
+          'secondary': '#FAFAFA'
         }
       }
     },

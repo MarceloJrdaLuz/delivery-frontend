@@ -13,6 +13,7 @@
     "@types/react-dom": "^18.0.5",
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
+    "jotai": "^1.7.7",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.32.0",

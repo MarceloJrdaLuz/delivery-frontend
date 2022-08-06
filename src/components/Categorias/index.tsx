@@ -1,5 +1,3 @@
-import { Dispatch } from "react"
-
 interface CategoriasProps {
     categoria: string
     categoriaAtiva?: boolean
