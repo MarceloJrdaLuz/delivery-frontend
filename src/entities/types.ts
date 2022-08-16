@@ -9,6 +9,7 @@ export interface Produto {
 
 export interface Carrinho {
     code: string | undefined,
+    nome: string | undefined,
     valor: number | undefined,
     quantidade: number | undefined,
     total: number | undefined  

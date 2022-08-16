@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'slim': '375px',
+      },
       colors:{
         button:{
           'hover': '#90caf9',
@@ -15,7 +18,7 @@ module.exports = {
           'primary': '#302F3C',
         },
         principais: {
-          'primary': '#FF6838',
+          'primary': '#f63e02',
           'secondary': '#FAFAFA'
         }
       }

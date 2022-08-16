@@ -1,7 +1,8 @@
 import FormLogin from '../../components/FormLogin'
 
-export default function Login() {
-   
+export default function PaginaLogin() {
+    document.title = 'Login'
+
     return (
         <>
             <main className={`md:flex md:h-screen`}>

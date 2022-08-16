@@ -11,7 +11,7 @@ interface BoxItemProps {
 
 export default function BoxItem(props: BoxItemProps) {
     return (
-        <div onClick={props.onClick} className={`flex-col items-center justify-center h-60 w-36 bg-modals-primary rounded-[30px] m-2`}>
+        <div onClick={props.onClick} className={`flex-col items-center justify-center h-60 w-32 slim:w-36  bg-modals-primary rounded-[30px] m-2`}>
             <div className={`flex h-1/2 w-full justify-center items-center`}>
                 <img className={`w-2/3 h-2/3`} src={banner} alt="Lanche" />
             </div>

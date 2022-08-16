@@ -1,7 +1,8 @@
 import FormEsqueciSenha from "../../components/FormEsqueciSenha";
 
 
-export default function EsqueciSenha() {
+export default function PaginaEsqueciSenha() {
+    document.title = 'Esqueci Minha Senha'
 
     return (
         <>

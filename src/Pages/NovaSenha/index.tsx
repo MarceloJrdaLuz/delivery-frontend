@@ -1,6 +1,8 @@
 import FormNovaSenha from "../../components/FormNovaSenha";
 
-export default function NovaSenha() {
+export default function PaginaNovaSenha() {
+    document.title = 'Alteração de Senha'
+
     return (
         <>
             <main className={`md:flex md:h-screen`}>

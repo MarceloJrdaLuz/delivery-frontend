@@ -1,13 +1,15 @@
 import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import TelaCadastro from "../Cadastro";
-import DetalhesProduto from "../DetalhesProduto";
-import EsqueciSenha from "../EsqueciSenha";
-import Home from "../Home";
-import Dashboard from "../Home";
-import Login from "../Login";
-import NovaSenha from "../NovaSenha";
+import PaginaTelaCadastro from "../Cadastro";
+import PaginaCarrinho from "../Carrinho";
+import PaginaDetalhesProduto from "../DetalhesProduto";
+import PaginaEsqueciSenha from "../EsqueciSenha";
+import PaginaHome from "../Home";
+import Dashboard from "../Dashboard";
+import PaginaLogin from "../Login";     
+import PaginaNovaSenha from "../NovaSenha";
+import PaginaHistorico from "../Historico";
 
 export default function AppRoutes() {
     const { authenticated, loading } = useContext(AuthContext)
@@ -18,7 +20,7 @@ export default function AppRoutes() {
         }
 
         if (!authenticated) {
-            return <Navigate to={'/'} />
+            return <Navigate to={'/login'} />
         }
         return children
     }
@@ -26,18 +28,25 @@ export default function AppRoutes() {
     return (
         <div className="App">
             <Routes>
-                <Route path='/' element={<Home />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/produto/:code' element={<DetalhesProduto />} />
-                <Route path='/cadastro' element={<TelaCadastro />} />
+                <Route path='/' element={<PaginaHome />} />
+                <Route path='/login' element={<PaginaLogin />} />
+                <Route path='/produto/:nomeProduto' element={<PaginaDetalhesProduto />} />
+                <Route path='/cadastro' element={<PaginaTelaCadastro />} />
                 <Route path='/dashboard'
                     element={
                         <PrivateRoute>
                             <Dashboard />
                         </PrivateRoute>
                     } />
-                <Route path='/nova-senha/:token/:email' element={<NovaSenha />} />
-                <Route path='/esqueci-minha-senha' element={<EsqueciSenha />} />
+                <Route path='/historico'
+                    element={
+                        <PrivateRoute>
+                            <PaginaHistorico />
+                        </PrivateRoute>
+                    } />
+                <Route path='/nova-senha/:token/:email' element={<PaginaNovaSenha />} />
+                <Route path='/esqueci-minha-senha' element={<PaginaEsqueciSenha />} />
+                <Route path='/carrinho' element={<PaginaCarrinho />} />
             </Routes>
 
         </div>

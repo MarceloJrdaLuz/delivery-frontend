@@ -1,6 +1,8 @@
 import FormCadastro from "../../components/FormCadastro";
 
-export default function TelaCadastro() {
+export default function PaginaCadastro() {
+    document.title = 'Cadastro'
+
     return (
         <main className={`md:flex md:h-screen`}>
             <section className={`flex w-screen h-screen md:w-7/12 md:h-full  relative md:static`}>

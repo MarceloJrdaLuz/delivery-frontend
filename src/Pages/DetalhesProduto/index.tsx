@@ -7,9 +7,11 @@ import { useFetch } from "../../hooks/useFetch";
 import { useAtomValue } from 'jotai'
 
 
-export default function DetalhesProduto(){
+export default function PaginaDetalhesProduto(){
+    document.title = 'Descrição do Produto'
+
     const params = useParams()
-    const { data } = useFetch<Produto>(`/products/${params.code}`)
+    const { data } = useFetch<Produto>(`/products/${params.nomeProduto}`)
     const qtdCarrinho = useAtomValue(carrinho)
     console.log(data)
     return(
