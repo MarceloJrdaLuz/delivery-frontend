@@ -53,7 +53,7 @@ export default function FormEsqueciSenha() {
                             { required: "Campo obrigatório" })
                     }}
                         invalido={errors?.email?.message ? 'invalido' : ''} />
-                    <Botao title='Entrar' type='submit' disabled={btnDisabled} onClick={()=>setBtnDisabled(true)}/>
+                    <Botao title='Entrar' type='submit' disabled={btnDisabled}/>
                 </div>
             </FormStyle>
         </>

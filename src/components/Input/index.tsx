@@ -15,7 +15,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement>{
 export default function Input(props: InputProps) {
     
     return (
-        <div className={`${props.readonly ? 'focus-within:border-black' : 'outline' } relative rounded-lg border-[1px] ${props.invalido === 'invalido' ? 'border-red-700 mb-1': 'border-slate-500'} focus-within:border-blue-400 outline-none my-6 w-full h-fit m-auto`}>
+        <div className={`${props.readonly ? 'focus-within:border-black' : 'outline' } relative rounded-lg border-[1px] ${props.invalido === 'invalido' ? 'border-red-700 mb-1': 'border-slate-500'} focus-within:border-principais-primary outline-none my-6 w-full h-fit m-auto`}>
             <input
                 type={props.tipo}
                 name={props.name}

@@ -1,10 +1,11 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Carrinho } from "../entities/types";
+import { Carrinho, ResponseAuth } from "../entities/types";
 import api from "../services/api";
 
 type AuthContextTypes = {
+    admin: boolean
     authenticated: boolean
     user: UserType | undefined
     login: (email: string, senha: string) => Promise<any>
@@ -28,9 +29,10 @@ type AuthContextProviderProps = {
 type UserType = {
     id: string
     email: string
+    token: string
     password?: string
     newPassword?: string
-    token: string
+    permissions: string
 }
 
 export const AuthContext = createContext({} as AuthContextTypes)
@@ -39,6 +41,7 @@ export function AuthProvider(props: AuthContextProviderProps) {
 
     const navigate = useNavigate()
     const [user, setUser] = useState<UserType | undefined>()
+    const [admin, setAdmin] = useState(false)
     const [loading, setLoading] = useState(true)
     const [erroCadastro, setErroCadastro] = useState(false)
     const [btnDisabled, setBtnDisabled] = useState(false)
@@ -48,6 +51,9 @@ export function AuthProvider(props: AuthContextProviderProps) {
         const usuarioRecuperado = localStorage.getItem('user')
         if (usuarioRecuperado) {
             setUser(JSON.parse(usuarioRecuperado))
+            if(JSON.parse(usuarioRecuperado).permissions === 'ADMIN'){
+                setAdmin(true)
+            }
         }
         setLoading(false)
     }, [])
@@ -56,14 +62,15 @@ export function AuthProvider(props: AuthContextProviderProps) {
         setCarrinhoGlobal([...carrinhoGlobal, newValues])
     }
 
-    async function login(email: string, senha: string) {
-        await api.post("/authenticated", {
+    async function login(email: string, senha: string){
+        await api.post<ResponseAuth>("/authenticated", {
             email: email,
             password: senha
         }).then(res => {
             const usuarioLogado = {
                 id: res.data.user._id,
                 email: res.data.user.email,
+                permissions: res.data.user.permissions,
                 token: res.data.token
             }
             if(usuarioLogado.token){
@@ -71,6 +78,9 @@ export function AuthProvider(props: AuthContextProviderProps) {
                 localStorage.setItem('user', JSON.stringify(usuarioLogado))
                 toast.success('Usuário Autenticado!')
                 navigate('/')    
+            }
+            if(usuarioLogado.permissions === "ADMIN"){
+                setAdmin(true)
             }
         }).catch(res => {
             const {response:{data:{error}}} = res
@@ -91,15 +101,16 @@ export function AuthProvider(props: AuthContextProviderProps) {
     }
 
     async function cadastro(nome: string, email: string, senha: string){
-        await api.post('auth/register', {
+        await api.post<ResponseAuth>('auth/register', {
             name: nome,
             email,
-            password: senha
+            password: senha,
         }).then(res => {
             const usuarioLogado = {
                 id: res.data.user._id,
                 email: res.data.user.email,
-                token: res.data.token
+                permissions: res.data.user.permissions,
+                token: res.data.token,
             }
             if(usuarioLogado.token){
                 toast.success('Cadastro efetuado com sucesso!')
@@ -151,7 +162,7 @@ export function AuthProvider(props: AuthContextProviderProps) {
 
     return (
         <AuthContext.Provider value={{
-            authenticated: !!user, user, loading, login, logout, cadastro, erroCadastro, setErroCadastro, resetPassword, esqueciMinhaSenha, btnDisabled, setBtnDisabled, carrinhoGlobal, atualizarCarrinho
+            authenticated: !!user, admin: !!admin, user, loading, login, logout, cadastro, erroCadastro, setErroCadastro, resetPassword, esqueciMinhaSenha, btnDisabled, setBtnDisabled, carrinhoGlobal, atualizarCarrinho
         }}>
             {props.children}
         </AuthContext.Provider>

@@ -40,7 +40,7 @@ export default function Cardapio() {
                     ))}
                 </nav>
             </StickyBox>
-            <section className={`flex flex-wrap justify-between items-center w-11/12 h-auto overflow-auto m-auto pt-6 mb-12`}>
+            <section className={`flex flex-wrap justify-around items-center w-11/12 h-auto overflow-auto m-auto pt-6 mb-12`}>
                 {data?.map(produto => <BoxItem onClick={() => {
                     carrinhoGlobal?.forEach(item => {
                         if(item.nome === produto.productName){

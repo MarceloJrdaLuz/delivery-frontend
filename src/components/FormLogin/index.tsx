@@ -41,6 +41,7 @@ export default function FormLogin() {
     })
 
     function onSubmit(data: FormValues) {
+        console.log('Cheguei aqui')
         setBtnDisabled(true)
         toast.promise(login(data.email, data.senha),{
             pending: 'Autenticando...',
@@ -55,7 +56,7 @@ export default function FormLogin() {
         <>
             <FormStyle onSubmit={handleSubmit(onSubmit, onError)}>
                 <div className={`w-full h-fit flex-col justify-center items-center`}>
-                    <div className={`my-6 m-auto w-11/12 font-semibold text-2xl sm:text-3xl`}>Login</div>
+                    <div className={`my-6 m-auto w-11/12 font-semibold text-2xl sm:text-3xl text-principais-primary`}>Login</div>
                     <Input tipo="text" placeholder="Email" registro={{
                         ...register('email',
                             { required: "Campo obrigatório" })
@@ -66,12 +67,12 @@ export default function FormLogin() {
                     {errors?.senha?.type && <InputError type={errors.senha.type} field='senha' />}
                     <div>
                         <div>
-                            <Link className='text-blue-600 hover:underline text-center text-sm sm:text-lg' to='/esqueci-minha-senha'>
+                            <Link className='text-principais-primary hover:underline text-center text-sm sm:text-lg' to='/esqueci-minha-senha'>
                                 Esqueci minha senha
                             </Link>
                         </div>
                         <div>
-                            <Link className='text-blue-600 hover:underline text-center text-sm sm:text-lg' to='/cadastro'>
+                            <Link className='text-principais-primary hover:underline text-center text-sm sm:text-lg' to='/cadastro'>
                                 Criar nova conta
                             </Link>
                         </div>
@@ -81,7 +82,7 @@ export default function FormLogin() {
                         <input className='mr-1' type='checkbox' title='Mantenha-me conectado'></input>
                         <span className={`ml-2 text-sm sm:text-lg sm:ml-0`}>Mantenha-me conectado</span>
                     </div> */}
-                        <Botao title='Entrar' type='submit' disabled={btnDisabled} onClick={()=>{setBtnDisabled(true)}}/>
+                        <Botao color='bg-button-primary' hoverColor='bg-button-hover' title='Entrar' type='submit' disabled={btnDisabled} />
                     </div>
                 </div>
             </FormStyle>

@@ -13,5 +13,14 @@
     "repetirSenha" : {
         "required": "Repetir senha é um campo obrigatório",
         "oneOf": "As duas senhas não conferem!"
+    },
+    "billingStreet": {
+        "required": "Nome da rua é um campo obrigatório"
+    },
+    "billingNumber": {
+        "required": "Numero da casa é um campo obrigatório"
+    },
+    "billingNeighborhood": {
+        "required": "Nome do bairro é um campo obrigatório"
     }
 }

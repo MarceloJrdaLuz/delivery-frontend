@@ -27,3 +27,7 @@ export const mostrarOpcoesCarrinho = atom('')
 export const setMostrarOpcoesCarrinho = atom(null, (get, set, value: string)=>{
     set(mostrarOpcoesCarrinho, value)
 })
+
+export const valorTotalPedido = atom(0)
+
+export const valorFrete = atom(0)

@@ -39,6 +39,7 @@ export default function FormCadastro() {
     })
 
     function onSubmit(data: CadastroValues) {
+        setBtnDisabled(true)
         cadastro(data.nome, data.email, data.senha)
     }
 
@@ -61,14 +62,13 @@ export default function FormCadastro() {
                 {erroCadastro ? (
                     <>
                         <div className="flex-wrap">
-                            {/* <span className="flex w-full py-5 text-red-500 text-xl">Usuário já cadastrado!</span> */}
                             <Link to={'/'}>
                                 <span className="flex w-full text-xl">Para ir para a página de login  <span className="pl-2 text-blue-600 hover:underline"> Clique aqui!</span></span>
                             </Link>
                         </div>
                     </>
                 ) : (
-                    <h1>Cadastre-se</h1>
+                    <h1 className="text-principais-primary font-semibold">Cadastre-se</h1>
                 )}
                 <div className="w-full h-full overflow-auto">
                     <Input tipo="text" placeholder="Nome Completo" registro={{
@@ -97,7 +97,9 @@ export default function FormCadastro() {
                     {errors?.repetirSenha?.type && <InputError type={errors.repetirSenha.type}
                         field='repetirSenha' />}
                 </div>
-                <Botao title="Cadastrar conta" type="submit" disabled={btnDisabled} onClick={()=>setBtnDisabled(true)}/>
+                <div className="flex justify-center">
+                    <Botao color="bg-button-primary" hoverColor="bg-button-hover" title="Cadastrar conta" type="submit" disabled={btnDisabled}/>
+                </div>
             </div>
         </FormStyle>
     )

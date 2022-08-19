@@ -1,12 +1,21 @@
+import { useAtomValue, useSetAtom } from "jotai";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Carrinho } from "../entities/types";
+import { valorFrete } from "../atoms/atoms";
+import { Carrinho, Endereco, Produto } from "../entities/types";
+import { useFetch } from "../hooks/useFetch";
 
 type CartContextTypes = {
     carrinhoGlobal?: Array<Carrinho>
     atualizarCarrinho: (newValues: Carrinho) => void
-    deletarItem: (itemDeletar: string) => void 
+    deletarItem: (itemDeletar: string) => void
+    somarCarrinho: () => number
+    finalizarCompra: () => void
+    enderecoEntrega?: Endereco
+    retirar?: boolean
+    valorFrete?: number
+    opcaoDeEntrega: (retirar: boolean, enderecoEntrega?: Endereco) => void
 }
 
 type CartContextProviderProps = {
@@ -20,8 +29,11 @@ export const CartContext = createContext({} as CartContextTypes)
 export function CartProvider(props: CartContextProviderProps) {
 
     const navigate = useNavigate()
-
+    const [retirar, setRetirar] = useState(false)
     const [carrinhoGlobal, setCarrinhoGlobal] = useState<Carrinho[]>([])
+    const [enderecoEntrega, setEnderecoEntrega] = useState<Endereco>()
+    const { data } = useFetch<Produto[]>(`/products-menu/Todos`)
+    const atomSetValorFrete = useSetAtom(valorFrete)
 
     useEffect(() => {
         const carrinhoRecuperado = localStorage.getItem('carrinho')
@@ -30,7 +42,7 @@ export function CartProvider(props: CartContextProviderProps) {
         }
     }, [])
 
-    useEffect(()=> {
+    useEffect(() => {
         localStorage.setItem('carrinho', JSON.stringify(carrinhoGlobal))
     }, [carrinhoGlobal])
 
@@ -39,17 +51,17 @@ export function CartProvider(props: CartContextProviderProps) {
         if (carrinhoGlobal.length < 1) {
             setCarrinhoGlobal([newValues])
             toast.success('Item adicionado ao sacola!')
-        }  
-        if(carrinhoGlobal.length >= 1) {
+        }
+        if (carrinhoGlobal.length >= 1) {
             const novosValores = newValues
-            const filtrado = carrinhoCopia.filter(function(item){
+            const filtrado = carrinhoCopia.filter(function (item) {
                 return item.code !== novosValores.code
             })
-            if(filtrado.length === carrinhoCopia.length){
+            if (filtrado.length === carrinhoCopia.length) {
                 toast.success('Item adicionado ao sacola!', {
                     autoClose: 2000,
                 })
-            }else{
+            } else {
                 toast.success('Sacola atualizado!', {
                     autoClose: 2000
                 })
@@ -61,18 +73,73 @@ export function CartProvider(props: CartContextProviderProps) {
         navigate('/')
     }
 
-    function deletarItem(itemDeletar: string){
+    function deletarItem(itemDeletar: string) {
         const carrinhoCopia = [...carrinhoGlobal]
         const valorADeletar = itemDeletar
-        const filtrado = carrinhoCopia.filter(function(item){
+        const filtrado = carrinhoCopia.filter(function (item) {
             return item.nome !== valorADeletar
         })
         setCarrinhoGlobal(filtrado)
     }
 
+    function somarCarrinho() {
+        const carrinhoCopia = [...carrinhoGlobal]
+        const carrinhoServidor: Array<Carrinho> = []
+        let totalCarrinho = 0
+        carrinhoCopia.forEach(item => {
+            data?.forEach(i => {
+                if (i.code === item.code) {
+                    totalCarrinho += item.quantidade! * i.price
+                    carrinhoServidor.push({
+                        code: item.code,
+                        nome: item.nome,
+                        quantidade: item.quantidade,
+                        total: item.total,
+                        valor: item.valor
+                    })
+                }
+            })
+        })
+        console.log(carrinhoServidor)
+        return totalCarrinho
+    }
+
+    function finalizarCompra() {
+        const carrinhoCopia = [...carrinhoGlobal]
+        const carrinhoServidor: Array<Carrinho> = []
+        let totalCarrinho = 0
+        carrinhoCopia.forEach(itemLocal => {
+            data?.forEach(itemServidor => {
+                if (itemServidor.code === itemLocal.code) {
+                    totalCarrinho += itemLocal.quantidade! * itemServidor.price
+                    carrinhoServidor.push({
+                        code: itemServidor.code,
+                        nome: itemServidor.productName,
+                        quantidade: itemLocal.quantidade,
+                        total: itemLocal.quantidade! * itemServidor.price,
+                        valor: itemServidor.price
+                    })
+                }
+            })
+        })
+        setCarrinhoGlobal(carrinhoServidor)
+        console.log(carrinhoServidor)
+        return totalCarrinho.toFixed(2)
+    }
+
+    function opcaoDeEntrega(retirar: boolean, enderecoEntrega?: Endereco) {
+        if (retirar === true) {
+            setRetirar(true)
+            atomSetValorFrete(0)
+            return
+        }
+        atomSetValorFrete(5)
+        setEnderecoEntrega(enderecoEntrega)
+    }
+
     return (
         <CartContext.Provider value={{
-            carrinhoGlobal, atualizarCarrinho, deletarItem
+            carrinhoGlobal, retirar, enderecoEntrega, atualizarCarrinho, deletarItem, somarCarrinho, finalizarCompra, opcaoDeEntrega
         }}>
             {props.children}
         </CartContext.Provider>

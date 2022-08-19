@@ -75,7 +75,7 @@ export default function FormNovaSenha() {
                     }}
                         invalido={errors?.repetirSenha?.message ? 'invalido' : ''} />
                     {errors?.repetirSenha?.type && <InputError type={errors.repetirSenha.type} field='repetirSenha' />}
-                    <Botao title='Registrar nova senha' type='submit' disabled={btnDisabled} onClick={()=>setBtnDisabled(true)}/>
+                    <Botao title='Registrar nova senha' type='submit' disabled={btnDisabled}/>
                 </div>
             </FormStyle>
         </>

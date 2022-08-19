@@ -25,7 +25,7 @@ export default function ModalProduto(props: ModalProdutosProps) {
     return (
         <main className={`w-screen h-screen flex-col`}>
             <header className={`relative w-screen h-3/6 flex justify-center items-center rounded-b-3xl bg-modals-primary`}>
-                <div className={`w-14 h-14 p-4 absolute top-7 left-7 bg-principais-secondary rounded-2xl`} onClick={() => navigate('/')}>
+                <div className={`w-14 h-14 p-4 absolute top-7 left-7 hover:brightness-50 bg-principais-secondary rounded-2xl`} onClick={() => navigate('/')}>
                     {iconeVoltar()}
                 </div>
                 <div className={`w-14 h-14 p-4 absolute top-7 right-7 bg-principais-secondary rounded-2xl`}>

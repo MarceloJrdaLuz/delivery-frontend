@@ -10,9 +10,10 @@ module.exports = {
       },
       colors:{
         button:{
-          'hover': '#90caf9',
+          'hover': '#e62e00',
           'disabled': '#ccc',
-          'default': '#64b5f6'
+          'default': '#90caf9',
+          'primary': '#f63e02',
         },
         modals:{
           'primary': '#302F3C',
