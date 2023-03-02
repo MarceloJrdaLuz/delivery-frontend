@@ -20,7 +20,7 @@ export default function BoxItem(props: BoxItemProps) {
                 {/* <span className="text-center text-white ">{props.descricao}</span> */}
                 <div className={`flex w-11/12 h-10 text-modals-primary font-bold text-lg justify-center items-center bg-[#fafafa] rounded-2xl m-auto`}>
                     {`R$ ${props.valor}`}
-                    <span className='ml-3'>{iconeAdd(`#302F3C`, 6, 6)}</span>
+                    <span className='ml-1'>{iconeAdd(`#302F3C`, 6, 6)}</span>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 import { useAtomValue, useSetAtom } from "jotai"
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { iconeOptions, iconeSetaBaixo } from "../../assets/images/icones"
+import { iconeOptions, iconeSetaBaixo, imageBagEmpty } from "../../assets/images/icones"
 import { carrinho, mostrarOpcoesCarrinho, setMostrarOpcoesCarrinho } from "../../atoms/atoms"
 import { CartContext } from "../../context/CartContext"
 import imageItem from "../../assets/images/lanchesbgremove.png"
@@ -60,6 +60,17 @@ export default function Carrinho() {
         )
     }
 
+    function renderizarCarrinhoEmpty() {
+        return (
+            <>
+                <div>
+                    {imageBagEmpty}
+                </div>
+                <span className="text-center m-2 p-4">Seu carrinho está vazio. Clique no botão abaixo para ir a página de lanches!</span>
+            </>
+        )
+    }
+
     return (
 
         <section className={`flex-col w-screen mb-16 relative`}>
@@ -105,13 +116,26 @@ export default function Carrinho() {
                     </li>
                 ))}
             </ul>
-            <div className="flex justify-end py-5 px-2 font-bold">
-                {`Total: R$ ${somarCarrinho()}`}
-            </div>
+            {somarCarrinho() !== 0 && (
+                <div className="flex justify-end py-5 px-2 font-bold">
+                    {`Total: R$ ${somarCarrinho().toFixed(2)}`}
+                </div>
+            )}
+            {carrinhoGlobal?.length! < 1 && (
+                <div className="flex flex-col justify-center items-center">
+                    {renderizarCarrinhoEmpty()}
+                </div>
+            )}
             <div className="flex w-8/12 m-auto items-center justify-center">
-                {!opcoesFinalizacao && <Botao onClick={() => {
-                    !authenticated ? setOpcaoFinalizacao(true) : navigate('/opcoes-entrega')
-                }} title="Finalizar compra" color="bg-principais-primary" hoverColor="bg-button-hover" />}
+                {!opcoesFinalizacao && carrinhoGlobal?.length! >= 1 ? (
+                    <Botao onClick={() => {
+                        !authenticated ? setOpcaoFinalizacao(true) : navigate('/opcoes-entrega')
+                    }} title="Finalizar compra" color="bg-principais-primary" hoverColor="bg-button-hover" />
+                ) : (
+                    <Botao onClick={() => {
+                        navigate('/')
+                    }} title="Ir para a página de compras" color="bg-principais-primary" hoverColor="bg-button-hover" />
+                )}
             </div>
             {opcoesFinalizacao && renderizarOpcoesFinalizar()}
             {show && renderizarOpcoes()}

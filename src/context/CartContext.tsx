@@ -1,5 +1,5 @@
-import { useAtomValue, useSetAtom } from "jotai";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { useSetAtom } from "jotai";
+import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { valorFrete } from "../atoms/atoms";
@@ -16,6 +16,8 @@ type CartContextTypes = {
     retirar?: boolean
     valorFrete?: number
     opcaoDeEntrega: (retirar: boolean, enderecoEntrega?: Endereco) => void
+    bairros?: Array<String>
+    setBairros?: Dispatch<SetStateAction<never[]>>
 }
 
 type CartContextProviderProps = {
@@ -34,6 +36,7 @@ export function CartProvider(props: CartContextProviderProps) {
     const [enderecoEntrega, setEnderecoEntrega] = useState<Endereco>()
     const { data } = useFetch<Produto[]>(`/products-menu/Todos`)
     const atomSetValorFrete = useSetAtom(valorFrete)
+    const [bairros, setBairros] = useState([])
 
     useEffect(() => {
         const carrinhoRecuperado = localStorage.getItem('carrinho')
@@ -41,6 +44,7 @@ export function CartProvider(props: CartContextProviderProps) {
             setCarrinhoGlobal(JSON.parse(carrinhoRecuperado))
         }
     }, [])
+
 
     useEffect(() => {
         localStorage.setItem('carrinho', JSON.stringify(carrinhoGlobal))
@@ -139,7 +143,7 @@ export function CartProvider(props: CartContextProviderProps) {
 
     return (
         <CartContext.Provider value={{
-            carrinhoGlobal, retirar, enderecoEntrega, atualizarCarrinho, deletarItem, somarCarrinho, finalizarCompra, opcaoDeEntrega
+            carrinhoGlobal, retirar, enderecoEntrega, atualizarCarrinho, deletarItem, somarCarrinho, finalizarCompra, opcaoDeEntrega, setBairros, bairros
         }}>
             {props.children}
         </CartContext.Provider>

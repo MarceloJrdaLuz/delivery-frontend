@@ -19,8 +19,6 @@
     },
     "billingNumber": {
         "required": "Numero da casa é um campo obrigatório"
-    },
-    "billingNeighborhood": {
-        "required": "Nome do bairro é um campo obrigatório"
     }
 }
+

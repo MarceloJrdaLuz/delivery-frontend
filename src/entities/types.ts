@@ -12,7 +12,7 @@ export interface Carrinho {
     nome: string | undefined,
     valor: number | undefined,
     quantidade: number | undefined,
-    total: number | undefined  
+    total: number | undefined
 }
 
 export interface ResponseAuth {
@@ -25,11 +25,20 @@ export interface ResponseAuth {
     },
     token: string
 }
+export interface ResponseBairros {
+    bairros: Array<String>
+}
 
 export interface Endereco {
     billingStreet: string,
-	billingNumber: string,
-	billingNeighborhood: string,
-	billingComplement: string,
-	billingReference: string
+    billingNumber: string,
+    billingComplement: string,
+    billingReference: string
+}
+
+export interface CadastroProdutos{
+    codeProduct: string,
+    priceProduct: string,
+    productCategory: string,
+    productName: string
 }

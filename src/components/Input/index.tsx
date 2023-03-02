@@ -10,18 +10,19 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement>{
     invalido?: string
     focus?: any
     registro?: any
+    className?: string
 }
 
 export default function Input(props: InputProps) {
     
     return (
-        <div className={`${props.readonly ? 'focus-within:border-black' : 'outline' } relative rounded-lg border-[1px] ${props.invalido === 'invalido' ? 'border-red-700 mb-1': 'border-slate-500'} focus-within:border-principais-primary outline-none my-6 w-full h-fit m-auto`}>
+        <div className={` ${props.readonly ? 'focus-within:border-black' : 'outline' } relative flex items-center rounded-lg border-[1px] ${props.invalido === 'invalido' ? 'border-red-700 mb-1': 'border-blue-gray-200'} focus-within:border-principais-primary focus-within:border-2 focus:text-principais-primary outline-0 my-3 w-full h-full m-auto ${props.className}`}>
             <input
                 type={props.tipo}
                 name={props.name}
                 placeholder={props.placeholder} 
-                className={`block p-[5%] sm:p-4 w-full  text-2xl
-                text-black appearance-none placeholder-transparent focus:outline-none bg-transparent read-only:bg-gray-300 read-only:rounded-lg`}
+                className={`block px-3 py-2.5 sm:p-4 w-full  text-sm
+                text-black appearance-none placeholder-transparent focus:outline-none bg-transparent read-only:bg-white read-only:rounded-lg font-sans font-normal text-left`}
                 readOnly={props.readonly}
                 autoComplete="off"
                 required = {props.required}

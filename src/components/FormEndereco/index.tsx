@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 import * as yup from 'yup'
 import { toast } from "react-toastify";
 import { CartContext } from "../../context/CartContext";
@@ -9,16 +9,44 @@ import Input from "../Input";
 import InputError from "../InputError";
 import Botao from "../Botao/Botao";
 import { useNavigate } from "react-router-dom";
+import { Select, Option } from "@material-tailwind/react"
+import { useSetAtom } from "jotai";
+import { valorFrete } from "../../atoms/atoms";
+import { useFetch } from "../../hooks/useFetch";
+import { ValoresEntregaProps } from "./types";
+
 
 export default function FormEndereco() {
+    const [bairros, setBairros] = useState([])
+    const [bairroSelecionado, setBairroSelecionado] = useState<String | undefined>()
+
+    const { data: getValuesDelivery } = useFetch<ValoresEntregaProps>(bairroSelecionado ? `/value-delivery/${bairroSelecionado}` : "")
+    const { data } = useFetch(`/bairros`)
+
+    useEffect(() => {
+        setBairros(data)
+    }, [data])
+
 
     const { opcaoDeEntrega } = useContext(CartContext)
     const navigate = useNavigate()
+    const atomSetValorFrete = useSetAtom(valorFrete)
+
+    useEffect(() => {
+        const valor = getValuesDelivery?.valueDelivery
+        if (typeof valor === "number") {
+            atomSetValorFrete(getValuesDelivery?.valueDelivery!)
+        }
+    }, [getValuesDelivery, atomSetValorFrete])
+
+    const handleSelect = (e: ReactNode) => {
+        const value = e?.toString()
+        setBairroSelecionado(value)
+    }
 
     const esquemaValidacao = yup.object({
         billingStreet: yup.string().required(),
         billingNumber: yup.string().required(),
-        billingNeighborhood: yup.string().required(),
         billingComplement: yup.string(),
         billingReference: yup.string()
     })
@@ -27,7 +55,6 @@ export default function FormEndereco() {
         defaultValues: {
             billingStreet: '',
             billingNumber: '',
-            billingNeighborhood: '',
             billingComplement: '',
             billingReference: ''
         }, resolver: yupResolver(esquemaValidacao)
@@ -61,7 +88,7 @@ export default function FormEndereco() {
                 }}
                     invalido={errors?.billingStreet?.message ? 'invalido' : ''} />
                 {errors?.billingStreet?.type && <InputError type={errors.billingStreet.type} field='billingStreet' />}
-
+cd
                 <Input tipo="text" placeholder="Número" registro={{
                     ...register('billingNumber',
                         { required: "Campo obrigatório" })
@@ -69,12 +96,11 @@ export default function FormEndereco() {
                     invalido={errors?.billingNumber?.message ? 'invalido' : ''} />
                 {errors?.billingNumber?.type && <InputError type={errors.billingNumber.type} field='billingNumber' />}
 
-                <Input tipo="text" placeholder="Bairro" registro={{
-                    ...register('billingNeighborhood',
-                        { required: "Campo obrigatório" })
-                }}
-                    invalido={errors?.billingNeighborhood?.message ? 'invalido' : ''} />
-                {errors?.billingNeighborhood?.type && <InputError type={errors.billingNeighborhood.type} field='billingNeighborhood' />}
+                <div className="my-2">
+                    {bairros && <Select onChange={handleSelect} color="deep-orange" variant="outlined" label="Bairro">
+                        {bairros?.map((bairro) => <Option key={bairro} value={bairro}>{bairro}</Option>)}
+                    </Select>}
+                </div>
 
                 <Input tipo="text" placeholder="Complemento" registro={{
                     ...register('billingComplement',
@@ -89,25 +115,6 @@ export default function FormEndereco() {
                 }}
                     invalido={errors?.billingReference?.message ? 'invalido' : ''} />
                 {errors?.billingReference?.type && <InputError type={errors.billingReference.type} field='billingReference' />}
-                {/* <Input tipo="text" placeholder="Email" registro={{
-                    ...register('email',
-                        { required: "Campo obrigatório" })
-                }}
-                    invalido={errors?.email?.message ? 'invalido' : ''} />
-                {errors?.email?.type && <InputError type={errors.email.type} field='email' />}
-                <Input tipo="password" placeholder="Senha" registro={{
-                    ...register('senha',
-                        { required: "Campo obrigatório" })
-                }}
-                    invalido={errors?.senha?.message ? 'invalido' : ''} />
-                {errors?.senha?.type && <InputError type={errors.senha.type} field='senha' />}
-                <Input tipo="password" placeholder="Repetir Senha" registro={{
-                    ...register('repetirSenha',
-                        { required: "Campo obrigatório" })
-                }}
-                    invalido={errors?.repetirSenha?.message ? 'invalido' : ''} />
-                {errors?.repetirSenha?.type && <InputError type={errors.repetirSenha.type}
-                    field='repetirSenha' />} */}
             </div>
             <Botao color="bg-button-primary" hoverColor="bg-button-hover" title="Entregar nesse endereço" type="submit" />
         </form>

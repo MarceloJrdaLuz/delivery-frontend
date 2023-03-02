@@ -76,11 +76,13 @@ export function AuthProvider(props: AuthContextProviderProps) {
             if(usuarioLogado.token){
                 setUser(usuarioLogado)
                 localStorage.setItem('user', JSON.stringify(usuarioLogado))
+                localStorage.setItem('token', JSON.stringify(usuarioLogado.token))
                 toast.success('Usuário Autenticado!')
                 navigate('/')    
             }
             if(usuarioLogado.permissions === "ADMIN"){
                 setAdmin(true)
+                navigate('/admin')
             }
         }).catch(res => {
             const {response:{data:{error}}} = res
@@ -97,6 +99,7 @@ export function AuthProvider(props: AuthContextProviderProps) {
     function logout() {
         setUser(undefined)
         localStorage.removeItem('user')
+        setAdmin(false)
         navigate('/')
     }
 
